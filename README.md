@@ -956,12 +956,6 @@ npm start
 # Server will run on http://localhost:5000
 
 # Open frontend (in a new terminal)
-cd ../Frontend
-# Serve the frontend (using any HTTP server)
-# For example, using Python:
-python -m http.server 3000
-# Or using Node.js http-server:
-npx http-server -p 3000
 
 # Access the application
 # Open browser and navigate to http://localhost:3000
