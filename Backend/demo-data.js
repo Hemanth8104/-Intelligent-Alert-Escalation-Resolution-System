@@ -101,7 +101,7 @@ function getRandomDate(hoursAgo = 24) {
 // Demo Data Generators
 
 async function createOverspeedScenario() {
-    console.log('📍 Creating Overspeed Escalation Scenario...');
+    console.log(' Creating Overspeed Escalation Scenario...');
     const driver = getRandomDriver();
     const vehicle = getRandomVehicle();
     const location = getRandomLocation();
