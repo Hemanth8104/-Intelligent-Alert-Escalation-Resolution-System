@@ -2,23 +2,24 @@
 
 A comprehensive, production-ready Intelligent Alert Escalation & Resolution System for MoveInSync's fleet monitoring with advanced features including OOP architecture, Redis integration, background jobs, and real-time dashboard.
 
-## 🌟 Enhanced Features
+##  Enhanced Features
 
-### 🏗️ Architecture Enhancements
+###  Architecture Enhancements
 - **Object-Oriented Design**: Clean separation of concerns with proper classes
 - **Redis Integration**: High-performance data storage with automatic fallback to in-memory
 - **Background Processing**: Automated alert processing every 2 minutes (configurable)
 - **Environment Configuration**: Comprehensive .env-based configuration
 - **Error Handling**: Production-ready error handling and logging
 
-### 🚀 Core Capabilities
+###  Core Capabilities
 - **Centralized Alert Management**: Multi-source alert ingestion with unified format
 - **Intelligent Rule Engine**: Dynamic, configurable escalation and auto-close rules
 - **Auto-Close Background Jobs**: Periodic scanning for auto-closure conditions
+- **Document Renewal Auto-Close**: Compliance alerts automatically close when documents are renewed (via UI or API)
 - **Comprehensive Dashboard**: Real-time analytics and fleet performance metrics
 - **Advanced Filtering**: Enhanced search with pagination and driver/vehicle tracking
 
-## 📊 System Architecture
+##  System Architecture
 
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────────┐
@@ -70,7 +71,7 @@ docker run -d -p 6379:6379 redis:alpine
 # The system works without Redis (falls back to in-memory storage)
 ```
 
-## ⚙️ Configuration
+##  Configuration
 
 ### Environment Variables (.env)
 
@@ -99,7 +100,7 @@ RULES_FILE_PATH=./rules.json
 AUTO_SAVE_RULES=true
 ```
 
-## 📡 Enhanced API Endpoints
+##  Enhanced API Endpoints
 
 ### Core Alert Management
 - `POST /api/alerts` - Create new alert
@@ -117,7 +118,7 @@ AUTO_SAVE_RULES=true
 - `PUT /api/rules` - Update rules dynamically
 - `POST /api/alerts/process` - Manual background processing trigger
 
-## 🎯 Alert Types & Enhanced Rules
+##  Alert Types & Enhanced Rules
 
 ### Rule Configuration (rules.json)
 ```json
@@ -149,7 +150,7 @@ AUTO_SAVE_RULES=true
 - **Cooldown periods**: Prevention of rapid re-escalations
 - **Dynamic updates**: Rules can be modified without system restart
 
-## 🤖 Background Jobs
+##  Background Jobs
 
 ### Auto-Close Background Worker
 - **Frequency**: Every 2 minutes (configurable)
@@ -157,12 +158,13 @@ AUTO_SAVE_RULES=true
 - **Conditions**: Scans all active alerts for auto-close triggers
 - **Logging**: Detailed logging of all actions taken
 
-### Alert Expiration Management
+### Document Expiry Management
 - **Automatic expiry**: Alerts older than configured days
 - **Status tracking**: Proper state transitions
 - **History preservation**: Complete audit trail maintained
+- **Document Expiry Auto-Close**: Automatically closes compliance alerts once renewal is detected
 
-## 📊 Dashboard Features
+##  Dashboard Features
 
 ### Real-Time Analytics
 - **Severity Distribution**: Active alerts by severity (Critical, High, Medium, Low)
@@ -176,7 +178,7 @@ AUTO_SAVE_RULES=true
 - **Escalation Rate**: Percentage of alerts that get escalated
 - **Average Alert Age**: System performance indicator
 
-## 🔄 Enhanced Alert Lifecycle
+##  Enhanced Alert Lifecycle
 
 ```
 CREATE → PROCESS → [ESCALATE/AUTO_CLOSE] → RESOLVE/EXPIRE
@@ -191,7 +193,7 @@ OPEN → OPEN/ESCALATED → ESCALATED/AUTO_CLOSED → RESOLVED/EXPIRED
 - **RESOLVED**: Manually resolved by operations team
 - **EXPIRED**: Auto-expired after configured time
 
-## 🏛️ OOP Architecture
+##  OOP Architecture
 
 ### Core Classes
 
@@ -221,7 +223,7 @@ OPEN → OPEN/ESCALATED → ESCALATED/AUTO_CLOSED → RESOLVED/EXPIRED
 - **Observer Pattern**: Background job scheduling
 - **Repository Pattern**: Data access abstraction
 
-## 📈 Performance Features
+##  Performance Features
 
 ### Redis Integration
 - **Primary Storage**: High-performance alert storage
@@ -235,7 +237,7 @@ OPEN → OPEN/ESCALATED → ESCALATED/AUTO_CLOSED → RESOLVED/EXPIRED
 - **Batch Processing**: Efficient background operations
 - **Memory Management**: Automatic cleanup of expired data
 
-## 🎯 Business Use Cases
+##  Business Use Cases
 
 ### Fleet Safety Management
 ```javascript
@@ -278,7 +280,7 @@ OPEN → OPEN/ESCALATED → ESCALATED/AUTO_CLOSED → RESOLVED/EXPIRED
 }
 ```
 
-## 🧪 Testing & Quality Assurance
+##  Testing & Quality Assurance
 
 ### Comprehensive Test Suite
 - **Health Check Testing**: System status verification
@@ -294,7 +296,7 @@ OPEN → OPEN/ESCALATED → ESCALATED/AUTO_CLOSED → RESOLVED/EXPIRED
 - Background job idempotency
 - Redis failover testing
 
-## 🚀 Production Deployment
+##  Production Deployment
 
 ### Environment Setup
 1. **Production Environment**: Set `NODE_ENV=production`
@@ -309,7 +311,7 @@ OPEN → OPEN/ESCALATED → ESCALATED/AUTO_CLOSED → RESOLVED/EXPIRED
 - **Database Scaling**: Redis clustering for large deployments
 - **Background Jobs**: Distributed job processing
 
-## 🔐 Security & Compliance
+##  Security & Compliance
 
 ### Security Features
 - **Input Validation**: Comprehensive request validation
@@ -322,7 +324,7 @@ OPEN → OPEN/ESCALATED → ESCALATED/AUTO_CLOSED → RESOLVED/EXPIRED
 - **Data Retention**: Configurable alert expiration
 - **Access Control**: Role-based API access (extensible)
 
-## 🛠️ Development Scripts
+##  Development Scripts
 
 ```bash
 # Development with auto-reload
@@ -341,7 +343,7 @@ npm run dashboard
 npm run stats
 ```
 
-## 📚 API Examples
+##  API Examples
 
 ### Creating Alerts with Rich Metadata
 ```bash
@@ -379,7 +381,7 @@ curl "http://localhost:3000/api/alerts?severity=CRITICAL"
 curl http://localhost:3000/api/dashboard
 ```
 
-## 🔄 Background Job Details
+##  Background Job Details
 
 ### Processing Logic
 1. **Idempotent Operations**: Safe to run multiple times
@@ -392,7 +394,7 @@ curl http://localhost:3000/api/dashboard
 - Use `/health` endpoint to verify job status
 - Monitor alert statistics for processing effectiveness
 
-## 🎛️ Rule Engine Deep Dive
+##  Rule Engine Deep Dive
 
 ### DSL-Like Syntax
 ```json
@@ -414,7 +416,7 @@ curl http://localhost:3000/api/dashboard
 4. **Action Execution**: Escalation or auto-close actions
 5. **History Recording**: Complete audit trail
 
-## 🚀 Future Enhancements
+##  Future Enhancements
 
 ### Planned Features
 - **WebSocket Integration**: Real-time notifications
@@ -430,7 +432,5 @@ curl http://localhost:3000/api/dashboard
 - **Notification Systems**: SMS, Email, Slack integrations
 
 ---
-
-**Built with ❤️ for MoveInSync Fleet Management**
 
 *Version 2.0.0 - Enhanced with OOP, Redis, Background Jobs, and Dashboard*
