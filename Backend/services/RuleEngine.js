@@ -66,9 +66,9 @@ class RuleEngine {
         try {
             const rulesPath = path.join(__dirname, '..', process.env.RULES_FILE_PATH || 'rules.json');
             fs.writeFileSync(rulesPath, JSON.stringify(this.rules, null, 2));
-            console.log('✅ Rules saved successfully');
+            console.log(' Rules saved successfully');
         } catch (error) {
-            console.error('❌ Error saving rules:', error);
+            console.error(' Error saving rules:', error);
         }
     }
 
@@ -128,25 +128,29 @@ class RuleEngine {
     }
 
     checkAutoCloseRules(alert, rule) {
-        if (!rule.auto_close_if || !alert.metadata) return null;
+    if (!rule.auto_close_if || !alert.metadata) return null;
 
-        const condition = rule.auto_close_if;
-        const shouldAutoClose = 
-            alert.metadata[condition] === true || 
-            alert.metadata[condition] === 'true' ||
-            alert.metadata.status === condition ||
-            alert.metadata.resolved === true;
+    const condition = rule.auto_close_if;
 
-        if (shouldAutoClose) {
-            return {
-                type: 'auto_close',
-                newStatus: ALERT_STATES.AUTO_CLOSED,
-                reason: `Auto-closed due to condition: ${condition}`
-            };
-        }
+    // extended condition handling for compliance/document renewal
+    const conditionValue =
+        alert.metadata[condition] === true ||
+        alert.metadata[condition] === 'true' ||
+        (condition === 'document_valid' && alert.metadata.document_valid === true) ||
+        (condition === 'document_renewed' && alert.metadata.document_renewed === true) ||
+        (condition === 'maintenance_completed' && alert.metadata.maintenance_completed === true);
 
-        return null;
+    if (conditionValue) {
+        return {
+            type: 'auto_close',
+            newStatus: ALERT_STATES.AUTO_CLOSED,
+            reason: `Auto-closed because ${condition} condition met`
+        };
     }
+
+    return null;
+}
+
 
     updateRules(newRules) {
         this.rules = { ...this.rules, ...newRules };
