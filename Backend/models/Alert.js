@@ -48,7 +48,7 @@ class Alert {
             oldSeverity
         );
         
-        console.log(`🚨 Alert ${this.alertId} escalated: ${reason}`);
+        console.log(` Alert ${this.alertId} escalated: ${reason}`);
     }
 
     autoClose(reason) {
@@ -62,7 +62,7 @@ class Alert {
             oldStatus
         );
         
-        console.log(`🤖 Alert ${this.alertId} auto-closed: ${reason}`);
+        console.log(` Alert ${this.alertId} auto-closed: ${reason}`);
     }
 
     resolve(resolution) {
@@ -78,7 +78,7 @@ class Alert {
             oldStatus
         );
         
-        console.log(`✅ Alert ${this.alertId} resolved: ${resolution}`);
+        console.log(` Alert ${this.alertId} resolved: ${resolution}`);
     }
 
     expire() {
@@ -93,7 +93,7 @@ class Alert {
             oldStatus
         );
         
-        console.log(`⏰ Alert ${this.alertId} expired`);
+        console.log(` Alert ${this.alertId} expired`);
     }
 
     isActive() {
