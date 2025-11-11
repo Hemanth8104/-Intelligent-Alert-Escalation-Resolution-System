@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoveInSync Alert Management Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-truck"></i>
+                    <h1>MoveInSync Alert Management</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openCreateAlertModal()">
+                        <i class="fas fa-plus"></i> Create Alert
+                    </button>
+                    <button class="btn btn-secondary" onclick="refreshDashboard()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <div class="status-indicator">
+                        <span id="connectionStatus" class="status-dot"></span>
+                        <span>System Status</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Stats -->
+        <section class="dashboard-stats">
+            <div class="stat-card critical">
+                <div class="stat-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="criticalCount">0</h3>
+                    <p>Critical Alerts</p>
+                </div>
+            </div>
+            <div class="stat-card high">
+                <div class="stat-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="highCount">0</h3>
+                    <p>High Priority</p>
+                </div>
+            </div>
+            <div class="stat-card medium">
+                <div class="stat-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="mediumCount">0</h3>
+                    <p>Medium Priority</p>
+                </div>
+            </div>
+            <div class="stat-card low">
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="lowCount">0</h3>
+                    <p>Low Priority</p>
+                </div>
+            </div>
+            <div class="stat-card total">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalActive">0</h3>
+                    <p>Total Active</p>
+                </div>
+            </div>
+            <div class="stat-card escalated">
+                <div class="stat-icon">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="escalationRate">0%</h3>
+                    <p>Escalation Rate</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Panel -->
+            <div class="left-panel">
+                <!-- Alert Trends Chart -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-line"></i> Alert Trends (7 Days)</h3>
+                    </div>
+                    <div class="card-content">
+                        <canvas id="alertTrendsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Top Drivers -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-users"></i> Top Drivers with Most Alerts</h3>
+                    </div>
+                    <div class="card-content">
+                        <div id="topDriversList" class="drivers-list">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="right-panel">
+                <!-- Filters -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-filter"></i> Filters</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="filters">
+                            <select id="statusFilter" onchange="applyFilters()">
+                                <option value="">All Statuses</option>
+                                <option value="OPEN">Open</option>
+                                <option value="ESCALATED">Escalated</option>
+                                <option value="AUTO_CLOSED">Auto Closed</option>
+                                <option value="RESOLVED">Resolved</option>
+                            </select>
+                            <select id="severityFilter" onchange="applyFilters()">
+                                <option value="">All Severities</option>
+                                <option value="CRITICAL">Critical</option>
+                                <option value="HIGH">High</option>
+                                <option value="MEDIUM">Medium</option>
+                                <option value="LOW">Low</option>
+                            </select>
+                            <select id="sourceTypeFilter" onchange="applyFilters()">
+                                <option value="">All Types</option>
+                                <option value="overspeed">Overspeed</option>
+                                <option value="driver_fatigue">Driver Fatigue</option>
+                                <option value="compliance">Compliance</option>
+                                <option value="vehicle_maintenance">Maintenance</option>
+                                <option value="feedback_negative">Negative Feedback</option>
+                            </select>
+                            <input type="text" id="driverIdFilter" placeholder="Driver ID" onchange="applyFilters()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Alerts -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-list"></i> Recent Alerts</h3>
+                        <div class="card-actions">
+                            <span id="alertCount" class="count-badge">0</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div id="alertsList" class="alerts-list">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Auto-Closed Alerts -->
+        <section class="auto-closed-section">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-robot"></i> Recent Auto-Closed Alerts</h3>
+                </div>
+                <div class="card-content">
+                    <div id="autoClosedList" class="auto-closed-list">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Create Alert Modal -->
+    <div id="createAlertModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus"></i> Create New Alert</h3>
+                <span class="close" onclick="closeCreateAlertModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="createAlertForm">
+                    <div class="form-group">
+                        <label for="alertSourceType">Source Type *</label>
+                        <select id="alertSourceType" required>
+                            <option value="">Select Source Type</option>
+                            <option value="overspeed">Overspeed</option>
+                            <option value="driver_fatigue">Driver Fatigue</option>
+                            <option value="compliance">Compliance</option>
+                            <option value="vehicle_maintenance">Vehicle Maintenance</option>
+                            <option value="feedback_negative">Negative Feedback</option>
+                            <option value="document_expiry">Document Expiry</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="alertSeverity">Severity</label>
+                        <select id="alertSeverity">
+                            <option value="LOW">Low</option>
+                            <option value="MEDIUM" selected>Medium</option>
+                            <option value="HIGH">High</option>
+                            <option value="CRITICAL">Critical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="alertDriverId">Driver ID</label>
+                        <input type="text" id="alertDriverId" placeholder="e.g., DRV001">
+                    </div>
+                    <div class="form-group">
+                        <label for="alertVehicleId">Vehicle ID</label>
+                        <input type="text" id="alertVehicleId" placeholder="e.g., MH12AB1234">
+                    </div>
+                    <div class="form-group">
+                        <label for="alertDescription">Description</label>
+                        <textarea id="alertDescription" placeholder="Alert description..." rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeCreateAlertModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Alert</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Detail Modal -->
+    <div id="alertDetailModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3><i class="fas fa-info-circle"></i> Alert Details</h3>
+                <span class="close" onclick="closeAlertDetailModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="alertDetailContent">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container">
+        <!-- Dynamic notifications -->
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

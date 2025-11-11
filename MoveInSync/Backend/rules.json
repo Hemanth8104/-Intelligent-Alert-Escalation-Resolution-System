@@ -1,0 +1,47 @@
+{
+  "overspeed": {
+    "escalate_if_count": 3,
+    "window_mins": 60,
+    "escalate_to_severity": "CRITICAL",
+    "auto_close_if": "speed_normalized"
+  },
+  "feedback_negative": {
+    "escalate_if_count": 2,
+    "window_mins": 1440,
+    "escalate_to_severity": "HIGH",
+    "auto_close_if": "feedback_resolved"
+  },
+  "compliance": {
+    "auto_close_if": "document_valid",
+    "escalate_if_days": 7,
+    "escalate_to_severity": "HIGH"
+  },
+  "document_expiry": {
+    "escalate_if_days": 3,
+    "escalate_to_severity": "CRITICAL",
+    "auto_close_if": "document_renewed"
+  },
+  "vehicle_maintenance": {
+    "escalate_if_days": 5,
+    "escalate_to_severity": "HIGH",
+    "auto_close_if": "maintenance_completed"
+  },
+  "driver_fatigue": {
+    "escalate_if_count": 1,
+    "window_mins": 30,
+    "escalate_to_severity": "CRITICAL",
+    "auto_close_if": "driver_rested"
+  },
+  "fuel_efficiency": {
+    "escalate_if_count": 5,
+    "window_mins": 1440,
+    "escalate_to_severity": "MEDIUM",
+    "auto_close_if": "efficiency_improved"
+  },
+  "route_deviation": {
+    "escalate_if_count": 2,
+    "window_mins": 120,
+    "escalate_to_severity": "HIGH",
+    "auto_close_if": "route_corrected"
+  }
+}

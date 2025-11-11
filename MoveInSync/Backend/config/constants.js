@@ -1,0 +1,52 @@
+// Alert States
+const ALERT_STATES = {
+    OPEN: 'OPEN',
+    ESCALATED: 'ESCALATED',
+    AUTO_CLOSED: 'AUTO_CLOSED',
+    RESOLVED: 'RESOLVED',
+    EXPIRED: 'EXPIRED'
+};
+
+// Severity Levels
+const SEVERITY_LEVELS = {
+    LOW: 'LOW',
+    MEDIUM: 'MEDIUM',
+    HIGH: 'HIGH',
+    CRITICAL: 'CRITICAL'
+};
+
+// Event Types for History Tracking
+const EVENT_TYPES = {
+    CREATED: 'CREATED',
+    ESCALATED: 'ESCALATED',
+    AUTO_CLOSED: 'AUTO_CLOSED',
+    RESOLVED: 'RESOLVED',
+    EXPIRED: 'EXPIRED',
+    RULE_APPLIED: 'RULE_APPLIED'
+};
+
+// API Response Codes
+const RESPONSE_CODES = {
+    SUCCESS: 200,
+    CREATED: 201,
+    BAD_REQUEST: 400,
+    NOT_FOUND: 404,
+    INTERNAL_ERROR: 500
+};
+
+// Configuration Constants
+const CONFIG = {
+    DEFAULT_PAGE_LIMIT: 50,
+    MAX_PAGE_LIMIT: 100,
+    DEFAULT_EXPIRY_DAYS: 30,
+    DEFAULT_BACKGROUND_JOB_INTERVAL: 2,
+    DEFAULT_ESCALATION_COOLDOWN: 60
+};
+
+module.exports = {
+    ALERT_STATES,
+    SEVERITY_LEVELS,
+    EVENT_TYPES,
+    RESPONSE_CODES,
+    CONFIG
+};
