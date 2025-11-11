@@ -496,6 +496,13 @@ async function showAlertDetail(alertId) {
                 </button>
             </div>` : ''}
             
+            ${alert.sourceType === 'compliance' && alert.status === 'OPEN' ? `
+<div style="margin-bottom: 25px;">
+    <button class="btn btn-warning" onclick="renewDocument('${alert.alertId}')">
+        <i class="fas fa-sync-alt"></i> Renew Document
+    </button>
+</div>` : ''}
+
             <div class="history-section">
                 <h4 style="margin-bottom: 15px; color: #2d3748;">
                     <i class="fas fa-history"></i> History (${alert.history.length} events)
@@ -621,5 +628,31 @@ function getAlertDescription(alert) {
             return `Rating: ${alert.metadata.rating || 'N/A'}/5 - ${alert.metadata.feedback || 'No details'}`;
         default:
             return 'Alert details available in metadata';
+    }
+}
+
+async function renewDocument(alertId) {
+    const confirmRenew = confirm('Mark document as renewed?');
+    if (!confirmRenew) return;
+
+    try {
+        showLoading(true);
+        const response = await makeApiCall(`/alerts/${alertId}/renew`, {
+            method: 'PATCH',
+            body: JSON.stringify({ metadata: { renewalDate: new Date().toISOString().split('T')[0] } })
+        });
+
+        if (response.success) {
+            showToast(' Document renewed and alert auto-closed!', 'success');
+            closeAlertDetailModal();
+            await loadDashboard();
+        } else {
+            showToast(' Failed to renew document', 'error');
+        }
+    } catch (error) {
+        console.error('Failed to renew document:', error);
+        showToast(' Error renewing document', 'error');
+    } finally {
+        showLoading(false);
     }
 }
