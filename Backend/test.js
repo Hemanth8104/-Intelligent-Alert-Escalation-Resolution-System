@@ -337,7 +337,7 @@ async function testEnhancedAlertSystem() {
         });
 
         console.log('\n All Enhanced Tests Completed Successfully!\n');
-        console.log(' Enhanced System Features Demonstrated:');
+        console.log('🚀 Enhanced System Features Demonstrated:');
         console.log('   ✓ Object-Oriented Programming Structure');
         console.log('   ✓ Redis Integration with In-Memory Fallback');
         console.log('   ✓ Automatic Background Jobs (every 2 minutes)');
@@ -397,7 +397,7 @@ async function checkServerWithRetry(maxRetries = 3) {
 }
 
 async function main() {
-    console.log('🔍 Checking server availability...');
+    console.log(' Checking server availability...');
     const serverRunning = await checkServerWithRetry();
     
     if (!serverRunning) {
@@ -419,7 +419,7 @@ async function main() {
 
 // Handle uncaught errors gracefully
 process.on('unhandledRejection', (error) => {
-    console.error('❌ Unhandled promise rejection:', error.message);
+    console.error(' Unhandled promise rejection:', error.message);
     process.exit(1);
 });
 
