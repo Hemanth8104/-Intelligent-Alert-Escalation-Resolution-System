@@ -21,18 +21,18 @@ class RedisManager {
             });
 
             this.client.on('connect', () => {
-                console.log('✅ Connected to Redis');
+                console.log(' Connected to Redis');
                 this.isConnected = true;
             });
 
             this.client.on('error', (err) => {
-                console.log('❌ Redis connection error:', err.message);
+                console.log(' Redis connection error:', err.message);
                 this.isConnected = false;
             });
 
             await this.client.ping();
         } catch (error) {
-            console.log('⚠️  Redis not available, falling back to in-memory storage');
+            console.log('  Redis not available, falling back to in-memory storage');
             this.isConnected = false;
         }
     }
