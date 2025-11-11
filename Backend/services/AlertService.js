@@ -18,12 +18,12 @@ class AlertService {
         const cronExpression = `*/${intervalMinutes} * * * *`;
         
         cron.schedule(cronExpression, async () => {
-            console.log('🔄 Running background alert processing...');
+            console.log(' Running background alert processing...');
             await this.processAllAlerts();
             await this.expireOldAlerts();
         });
 
-        console.log(`⏰ Background job scheduled every ${intervalMinutes} minutes`);
+        console.log(` Background job scheduled every ${intervalMinutes} minutes`);
     }
 
     async createAlert(alertData) {
@@ -36,25 +36,31 @@ class AlertService {
         return alert;
     }
 
-    async processAlert(alert) {
-        if (this.processingQueue.has(alert.alertId)) return; // Prevent duplicate processing
+   async processAlert(alert) {
+    if (this.processingQueue.has(alert.alertId)) return; // Prevent duplicate processing
+    
+    this.processingQueue.add(alert.alertId);
+    
+    try {
+        const allAlerts = await this.storageManager.getAllAlerts();
+        const action = await this.ruleEngine.evaluateAlert(alert, allAlerts);
         
-        this.processingQueue.add(alert.alertId);
-        
-        try {
-            const allAlerts = await this.storageManager.getAllAlerts();
-            const action = await this.ruleEngine.evaluateAlert(alert, allAlerts);
-            
-            if (action) {
-                await this.executeAction(alert, action);
-                await this.storageManager.saveAlert(alert);
+        if (action) {
+            await this.executeAction(alert, action);
+            await this.storageManager.saveAlert(alert);
+
+            //  Log auto-close here
+            if (alert.status === ALERT_STATES.AUTO_CLOSED) {
+                console.log(` Auto-closed alert ${alert.alertId} stored successfully`);
             }
-        } catch (error) {
-            console.error(`Error processing alert ${alert.alertId}:`, error);
-        } finally {
-            this.processingQueue.delete(alert.alertId);
         }
+    } catch (error) {
+        console.error(`Error processing alert ${alert.alertId}:`, error);
+    } finally {
+        this.processingQueue.delete(alert.alertId);
     }
+}
+
 
     async executeAction(alert, action) {
         switch (action.type) {
@@ -78,9 +84,9 @@ class AlertService {
                 await this.processAlert(alert);
             }
             
-            console.log('✅ Background processing completed');
+            console.log(' Background processing completed');
         } catch (error) {
-            console.error('❌ Error in background processing:', error);
+            console.error(' Error in background processing:', error);
         }
     }
 
@@ -101,10 +107,10 @@ class AlertService {
             }
             
             if (expiredCount > 0) {
-                console.log(`⏰ Expired ${expiredCount} old alerts`);
+                console.log(` Expired ${expiredCount} old alerts`);
             }
         } catch (error) {
-            console.error('❌ Error expiring old alerts:', error);
+            console.error(' Error expiring old alerts:', error);
         }
     }
 
