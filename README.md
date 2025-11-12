@@ -22,17 +22,15 @@ Modern ride-sharing platforms require sophisticated alert management systems to 
 ### Solution Delivered
 A full-stack web application featuring:
 - **Real-time Alert Processing** - Automated alert creation, escalation, and resolution
-- **Advanced Dashboard** - Professional dark-mode interface with analytics
+- **Advanced Dashboard** - With graph
 - **Rule-based Engine** - Configurable business rules for alert handling
-- **Modern UI/UX** - Glassmorphic design with smooth animations
 - **Comprehensive API** - RESTful endpoints for all operations
 
 ### Technology Stack
-- **Frontend**: HTML5, CSS3 (Modern Dark Theme), Vanilla JavaScript, Chart.js
+- **Frontend**: HTML5, CSS3 , Vanilla JavaScript, Chart.js
 - **Backend**: Node.js, Express.js
 - **Architecture**: MVC Pattern, Service Layer Architecture
-- **Security**: Helmet.js, CORS, Input Validation
-- **Monitoring**: Winston Logging, Health Checks
+- **Security**: CORS
 
 ---
 
@@ -41,14 +39,14 @@ A full-stack web application featuring:
 ### High-Level Architecture
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Frontend      │───▶│   Backend API   │───▶│   Data Layer    │
-│   Dashboard     │    │   Express.js    │    │   In-Memory     │
+│   Frontend      │───▶│   Backend API   │───▶│   Data Layer   │
+│   Dashboard     │    │   Express.js    │    │                 │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                        │                        │
          ▼                        ▼                        ▼
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Chart.js      │    │   Rule Engine   │    │   Logging       │
-│   Animations    │    │   Monitoring    │    │   Winston       │
+│   Animations    │    │   Monitoring    │    │                 │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
