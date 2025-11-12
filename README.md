@@ -30,7 +30,7 @@ A full-stack web application featuring:
 - **Frontend**: HTML5, CSS3 , Vanilla JavaScript, Chart.js
 - **Backend**: Node.js, Express.js
 - **Architecture**: MVC Pattern, Service Layer Architecture
-- **Security**: CORS
+- **Security**: CORS, Input Validation
 
 ---
 
@@ -74,7 +74,7 @@ Frontend/
 
 ### 1. Real-Time Alert Dashboard
 
-**Description**: Professional dashboard displaying live alert data with modern glassmorphic design.
+**Description**: Professional dashboard displaying live alert data.
 
 **Code Implementation**:
 ```javascript
@@ -100,12 +100,8 @@ class AlertManagementSystem {
 ```
 
 **Visual Features**:
-- Dark theme with gradient accents
 - Real-time counters with animations
-- Glassmorphic cards with backdrop blur
 - Responsive grid layout
-
-
 
 ### 2. Advanced Alert Processing Engine
 
@@ -138,7 +134,6 @@ class AlertService {
 **Business Logic Features**:
 - Automatic severity classification
 - Rule-based escalation triggers
-- Duplicate alert detection
 - Auto-closure mechanisms
 
 ---
@@ -242,11 +237,11 @@ class RuleEngine {
 
 ### 5. Modern User Interface Design
 
-**Description**: Professional dark-mode interface with glassmorphism effects and smooth animations.
+**Description**: Professional interface with smooth animations.
 
 **Code Implementation**:
 ```css
-/* Modern Dark Theme Styling */
+/* Modern Theme Styling */
 :root {
     --bg-primary: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     --bg-secondary: rgba(30, 41, 59, 0.8);
